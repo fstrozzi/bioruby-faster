@@ -40,9 +40,16 @@ Rcov::RcovTask.new do |test|
   test.rcov_opts << '--exclude "gems/*"'
 end
 
+desc "Run all specs"
+task :spec do
+  FileList['spec/**/*_spec.rb'].each do |spec|
+    sh "rspec #{spec}"
+  end
+end
+
 task :default => :test
 
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
