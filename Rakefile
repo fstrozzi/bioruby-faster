@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "bio-faster"
   gem.homepage = "http://github.com/fstrozzi/bioruby-faster"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{A fast parser for Fasta and FastQ files}
+  gem.description = %Q{A fast parser for Fasta and FastQ files}
   gem.email = "francesco.strozzi@gmail.com"
   gem.authors = ["Francesco Strozzi"]
   # dependencies defined in Gemfile
