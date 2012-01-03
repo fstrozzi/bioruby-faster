@@ -80,33 +80,33 @@ describe Bio::Faster do
     
       it "converts directly quality scores for Illumina 1.8+ FastQ files" do
 
-        bio_quals = []
-        # standard Quality conversion as done by BioRuby
+        bioruby_quals = []
+        # standard Quality conversion as done in BioRuby Bio::FastQ
         Bio::FlatFile.open(Bio::Fastq,File.open(File.join(TEST_DATA,"sample.fastq"))).each_entry do |seq|
-          bio_quals << seq.qualities
+          bioruby_quals << seq.qualities
         end
 
         faster_quals = []
         Bio::Faster.parse(File.join(TEST_DATA,"sample.fastq")) do |seq|
           faster_quals << seq[-1]
         end
-        faster_quals.should == bio_quals
+        faster_quals.should == bioruby_quals
 
       end
 
       it "converts directly quality scores for SFF 454 FastQ files" do
 
-        bio_quals = []
-        # standard Quality conversion as done by BioRuby
+        bioruby_quals = []
+        # standard Quality conversion as done in BioRuby Bio::FastQ
         Bio::FlatFile.open(Bio::Fastq,File.open(File.join(TEST_DATA,"sff_sample.fastq"))).each_entry do |seq|
-          bio_quals << seq.qualities
+          bioruby_quals << seq.qualities
         end
 
         faster_quals = []
         Bio::Faster.parse(File.join(TEST_DATA,"sff_sample.fastq")) do |seq|
           faster_quals << seq[-1]
         end
-        faster_quals.should == bio_quals
+        faster_quals.should == bioruby_quals
 
       end
     
