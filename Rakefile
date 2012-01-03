@@ -58,3 +58,21 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+namespace :ext do
+  desc "Compile extension"
+  task :build do
+    puts "Building extension"
+    cd File.join(File.dirname(__FILE__),"ext")
+    sh "ruby "+File.join(File.dirname(__FILE__),"ext","extconf.rb")
+    sh "make"
+    FileList["*.log"].each do |file|
+      rm file
+    end
+    FileList["*.o"].each do |file|
+      rm file
+    end
+      
+  end
+end
+
