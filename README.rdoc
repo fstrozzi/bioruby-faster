@@ -1,6 +1,12 @@
 = bio-faster
 
-Description goes here.
+Fast and simple parser for FastA / FastQ files, based on Heng Li Kseq library written in C.
+http://lh3lh3.users.sourceforge.net/parsefastq.shtml
+
+= Examples
+
+See the wiki page.
+
 
 == Contributing to bio-faster
  
