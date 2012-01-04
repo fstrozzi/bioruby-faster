@@ -9,9 +9,10 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Francesco Strozzi"]
-  s.date = "2011-12-22"
-  s.description = "TODO: longer description of your gem"
+  s.date = "2012-01-04"
+  s.description = "A fast parser for Fasta and FastQ files"
   s.email = "francesco.strozzi@gmail.com"
+  s.extensions = ["ext/extconf.rb"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -19,19 +20,29 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "bio-faster.gemspec",
+    "ext/extconf.rb",
+    "ext/faster.c",
+    "ext/kseq.h",
     "lib/bio-faster.rb",
-    "test/helper.rb",
-    "test/test_bio-faster.rb"
+    "spec/helper.rb",
+    "spec/parser_spec.rb",
+    "test/data/sample.fasta",
+    "test/data/sample.fastq",
+    "test/data/sample.fastq.gz",
+    "test/data/sff_sample.fastq"
   ]
   s.homepage = "http://github.com/fstrozzi/bioruby-faster"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
+  s.required_ruby_version = Gem::Requirement.new(">= 1.9")
   s.rubygems_version = "1.8.12"
-  s.summary = "TODO: one-line summary of your gem"
+  s.summary = "A fast parser for Fasta and FastQ files"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
@@ -42,12 +53,14 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
       s.add_development_dependency(%q<bio>, [">= 1.4.2"])
+      s.add_development_dependency(%q<rspec>, [">= 0"])
     else
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_dependency(%q<rcov>, [">= 0"])
       s.add_dependency(%q<bio>, [">= 1.4.2"])
+      s.add_dependency(%q<rspec>, [">= 0"])
     end
   else
     s.add_dependency(%q<shoulda>, [">= 0"])
@@ -55,6 +68,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
     s.add_dependency(%q<rcov>, [">= 0"])
     s.add_dependency(%q<bio>, [">= 1.4.2"])
+    s.add_dependency(%q<rspec>, [">= 0"])
   end
 end
 
