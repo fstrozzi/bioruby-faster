@@ -11,6 +11,7 @@ KSEQ_INIT(gzFile, gzread)
 
 static VALUE method_parse(VALUE self, VALUE file) {
 
+	// check if a block is passed to the method
 	if (!(rb_block_given_p())) {
 		rb_raise(rb_eArgError,"You must pass a valid block!");
 	}
@@ -31,7 +32,7 @@ static VALUE method_parse(VALUE self, VALUE file) {
 				VALUE rb_quality = rb_ary_new();
 				int unsigned i = 0;
 				while(i < seq->qual.l) {
-					rb_ary_push(rb_quality,INT2FIX(*(seq->qual.s + i) - 33));
+					rb_ary_push(rb_quality,INT2FIX(*(seq->qual.s + i) - 33)); // quality conversion (Sanger/Phred only)
 					i++;
 				}
 				rb_ary_push(arr,rb_quality);
@@ -46,6 +47,6 @@ static VALUE method_parse(VALUE self, VALUE file) {
  
 void Init_faster() {
 	VALUE Bio = rb_define_module("Bio");
-	VALUE Faster = rb_define_module_under(Bio,"Faster");
+	VALUE Faster = rb_define_module_under(Bio,"Faster"); // it is defined as a sub-module of Bio
 	rb_define_singleton_method(Faster,"parse",method_parse,1);
 }
