@@ -75,6 +75,26 @@ describe Bio::Faster do
       faster_res[-1][2].should == "mgltrrealssiaavggekalkdalavlggps"
     end
   
+    it "can return the sequence data in a more friendly way" do
+      Bio::Faster.parse(File.join(TEST_DATA,"sample.fastq")) do |sequence_id, comment, sequence, quality|
+        sequence_id.should == "HISEQ1:86:D0306ACXX:2:1101:20970:17588"
+        comment.should == "1:N:0:CTTGTA"
+        sequence.should == "CGGTGCTGTTGTTATGCTGATGCTTATTAGTGCAAGTGTAGCTCCTCCGATTAGATGAATTAACAGGTGTCCTGCAGTAATGTTGGCTGTTAGTCGTAC"
+        quality.class.should == Array 
+        break
+      end
+    end
+    
+    it "can return the sequence data in a more friendly way (also for FastA)" do
+      Bio::Faster.parse(File.join(TEST_DATA,"sample.fasta")) do |sequence_id, comment, sequence, quality|
+        quality.should == nil # it is a Fasta file, so no quality
+        sequence_id.should == "seq1"
+        comment.should == "comment1"
+        sequence.should == "AGCAATTTCCCTTTTCCTGTCCTTTTTATAACATTGTGGAGGAAGACGGCAGCATAAAAAGGACAGTATTTGATTAAAAAATGATAAAAATTTTCAAAC"
+        break
+      end
+    end
+  
   
     describe "quality conversion for FastQ files (Sanger/Phred only)" do
     
@@ -87,8 +107,8 @@ describe Bio::Faster do
         end
 
         faster_quals = []
-        Bio::Faster.parse(File.join(TEST_DATA,"sample.fastq")) do |seq|
-          faster_quals << seq[-1]
+        Bio::Faster.parse(File.join(TEST_DATA,"sample.fastq")) do |sequence_id, comment, sequence, quality|
+          faster_quals << quality
         end
         faster_quals.should == bioruby_quals
 
@@ -103,8 +123,8 @@ describe Bio::Faster do
         end
 
         faster_quals = []
-        Bio::Faster.parse(File.join(TEST_DATA,"sff_sample.fastq")) do |seq|
-          faster_quals << seq[-1]
+        Bio::Faster.parse(File.join(TEST_DATA,"sff_sample.fastq")) do |sequence_id, comment, sequence, quality|
+          faster_quals << quality
         end
         faster_quals.should == bioruby_quals
 
