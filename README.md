@@ -1,4 +1,4 @@
-bio-faster
+Bio::Faster
 ==========
 
 Fast and simple parser for FastA / FastQ files, based on Heng Li Kseq library written in C.
