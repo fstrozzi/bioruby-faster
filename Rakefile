@@ -41,14 +41,11 @@ Rcov::RcovTask.new do |test|
   test.rcov_opts << '--exclude "gems/*"'
 end
 
-desc "Run all specs"
-task :spec do
-  FileList['spec/**/*_spec.rb'].each do |spec|
-    sh "rspec #{spec}"
-  end
+require 'rspec/core'
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
 end
-
-task :default => :test
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
@@ -73,7 +70,9 @@ namespace :ext do
     FileList["*.o"].each do |file|
       rm file
     end
-      
+    cd ".."  
   end
 end
+
+task :default => ["ext:build",:spec]
 
