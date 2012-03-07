@@ -57,6 +57,16 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
+namespace :ext do
+  desc "Build native extension"
+  task :build do
+    cd "ext"
+    ruby "mkrf_conf.rb"
+    sh "rake"
+    cd ".."
+  end
 
-task :default => [:spec]
+end
+
+task :default => ["ext:build",:spec]
 
