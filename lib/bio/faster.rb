@@ -23,13 +23,10 @@ module Bio
     attach_function :fastQ_iterator, [Record], :int
 
     def self.parse_fastq(file)
-        seq = Record.new
-        seq[:filename] = FFI::MemoryPointer.from_string(file)
-        while Bio::Faster.fastQ_iterator(seq) == 1
-          puts "From Ruby:"
-          puts seq[:id].read_string
-          puts seq[:seq].read_string
-          puts seq[:quality].read_string
+        record = Record.new
+        record[:filename] = FFI::MemoryPointer.from_string(file)
+        while Bio::Faster.fastQ_iterator(record) == 1
+          yield [record[:id].read_string,record[:seq].read_string, record[:quality].read_string]
         end
     end
 
