@@ -2,9 +2,10 @@
 module Bio
 
   module Faster
+
     extend FFI::Library
 
-    ffi_lib Bio::Faster::Library.path
+    ffi_lib Bio::Faster::Library.load
 
     class Record < FFI::Struct
       layout :id, :pointer,
