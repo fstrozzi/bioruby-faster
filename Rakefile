@@ -47,7 +47,7 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
@@ -57,22 +57,6 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-namespace :ext do
-  desc "Compile extension"
-  task :build do
-    puts "Building extension"
-    cd File.join(File.dirname(__FILE__),"ext")
-    sh "ruby "+File.join(File.dirname(__FILE__),"ext","extconf.rb")
-    sh "make"
-    FileList["*.log"].each do |file|
-      rm file
-    end
-    FileList["*.o"].each do |file|
-      rm file
-    end
-    cd ".."  
-  end
-end
 
-task :default => ["ext:build",:spec]
+task :default => [:spec]
 
