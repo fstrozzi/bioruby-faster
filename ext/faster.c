@@ -44,8 +44,11 @@ int fastQ_iterator(Record *seq) {
       seq->line = malloc(sizeof(char)*(_BSIZE)); */
     char line[_BSIZE];
 
-    for (int i = 0; i < 4 && fgets(line, _BSIZE, seq->stream) != NULL; i++)
+    for (int i = 0; i < 4; i++)
     {
+      if (fgets(line, _BSIZE, seq->stream) == NULL)
+          return 0;
+
       char *value;
       if (i==0) seq->id = alloc_and_copy(seq->id, line);
       if (i==1) seq->seq = alloc_and_copy(seq->seq, line);
