@@ -1,4 +1,8 @@
 
+#
+# Copyright(C) 2012 Francesco Strozzi <francesco.strozzi@gmail.com>
+#
+
 module Bio
 
   module Faster

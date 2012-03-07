@@ -1,4 +1,8 @@
 
+/*
+  Copyright(C) 2012 Francesco Strozzi <francesco.strozzi@gmail.com>
+                    Yury Pirola
+*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -46,9 +50,7 @@ int fastQ_iterator(Record *seq) {
 
     for (int i = 0; i < 4; i++)
     {
-      if (fgets(line, _BSIZE, seq->stream) == NULL)
-          return 0;
-
+      if (fgets(line, _BSIZE, seq->stream) == NULL) return 0;
       char *value;
       if (i==0) seq->id = alloc_and_copy(seq->id, line);
       if (i==1) seq->seq = alloc_and_copy(seq->seq, line);
