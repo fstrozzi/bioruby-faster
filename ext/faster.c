@@ -44,8 +44,6 @@ int fastQ_iterator(Record *seq) {
     if (!seq->stream)
       seq->stream = fopen(seq->filename,"r");
 
-    /*if (!seq->line)
-      seq->line = malloc(sizeof(char)*(_BSIZE)); */
     char line[_BSIZE];
 
     for (int i = 0; i < 4; i++)
