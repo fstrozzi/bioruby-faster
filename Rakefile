@@ -21,7 +21,6 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{A fast parser for Fasta and FastQ files}
   gem.email = "francesco.strozzi@gmail.com"
   gem.authors = ["Francesco Strozzi"]
-  gem.required_ruby_version = '>= 1.9'
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
