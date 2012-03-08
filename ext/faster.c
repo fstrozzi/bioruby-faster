@@ -55,6 +55,7 @@ int check_header(char *header, char *firstline) {
 
 int fastQ_iterator(Record *seq) {
 
+    // initialization of file stream, line buffer and bad string characters
     if (!seq->stream)
       seq->stream = fopen(seq->filename,"r");
     if (!seq->line)
@@ -62,7 +63,7 @@ int fastQ_iterator(Record *seq) {
     if (!seq->bad_chars)
       seq->bad_chars = " \x1F\x7F\t\v\e";
 
-    char *header = "@";
+    char *header = "@"; // FastQ header
     for (int i = 0; i < 4; i++)
     {
       if (fgets(seq->line, _BSIZE, seq->stream) == NULL) return 0;
