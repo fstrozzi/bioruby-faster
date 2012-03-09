@@ -12,13 +12,24 @@
 typedef struct {
     char *id;
     char *seq;
-    char *quality;
+    int *quality;
+    char *raw_quality;
     char *filename;
     char *line;
     char *bad_chars;
     FILE *stream;
 
 }FastQRecord;
+
+typedef struct {
+    char *id;
+    char *seq;
+    char *filename;
+    char *line;
+    char *bad_chars;
+    FILE *stream;
+
+}FastARecord;
 
 static char* alloc_and_copy(char *dst, char *src) {
   if (dst==NULL || strlen(dst)<strlen(src)) {
@@ -39,6 +50,14 @@ const char* check_bad_chars(char *invalid_chars, char *string_to_check) {
 }
 
 static char* initialize(char *ptr) {
+    if(ptr!=NULL){
+        free(ptr);
+        ptr = NULL;
+    }
+    return ptr;
+}
+
+int* initialize_int(int *ptr) {
     if(ptr!=NULL){
         free(ptr);
         ptr = NULL;
@@ -69,13 +88,13 @@ int fastQ_iterator(FastQRecord *seq) {
     // this is done to wipe out data from previous iteration
     seq->id = initialize(seq->id);
     seq->seq = initialize(seq->seq);
-    seq->quality = initialize(seq->quality);
-
+    seq->raw_quality = initialize(seq->raw_quality);
+    seq->quality = initialize_int(seq->quality);
     for (int i = 0; i < 4; i++)
     {
       if (fgets(seq->line, _BSIZE, seq->stream) == NULL) {
         // if either sequence or quality is missing the record is truncated
-        if((seq->seq != NULL && seq->quality == NULL) || (seq->quality != NULL && seq->seq == NULL)) return -2;
+        if((seq->seq != NULL && seq->raw_quality == NULL) || (seq->raw_quality != NULL && seq->seq == NULL)) return -2;
         else return 0;
       }
 
@@ -87,14 +106,26 @@ int fastQ_iterator(FastQRecord *seq) {
         if (check_bad_chars(seq->bad_chars,seq->line)) return -1; // check if quality or sequence includes bad characters
         if (i==1) seq->seq = alloc_and_copy(seq->seq, seq->line);
         if (i==3) {
-            seq->quality = alloc_and_copy(seq->quality, seq->line);
-            if(strlen(seq->seq) != strlen(seq->quality)) return -2;  // if sequence and quality are of different length the record is truncated
+           seq->raw_quality = alloc_and_copy(seq->raw_quality, seq->line);
+           int quality_length = strlen(seq->raw_quality);
+           if(strlen(seq->seq) != quality_length) return -2;  // if sequence and quality are of different length the record is truncated
+           int c = 0;
+           seq->quality = malloc(sizeof (int)* quality_length);
+           while(c < quality_length) {
+                seq->quality[c] = *(seq->line + c) - 33; // quality conversion (Sanger/Phred only)
+            	c++;
+           }
+
         }
 
       }
     }
 
     return 1;
+
+}
+
+int fastA_iterator(FastARecord *seq) {
 
 }
 
