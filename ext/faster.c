@@ -34,16 +34,8 @@ static char* alloc_and_copy(char *dst, char *src) {
 }
 
 
-int check_bad_chars(char *invalid_chars, char *string_to_check) {
-
-   char *c = string_to_check;
-   while (*c) {
-       if (strchr(invalid_chars, *c))
-          return 1;
-       c++;
-   }
-
-   return 0;
+const char* check_bad_chars(char *invalid_chars, char *string_to_check) {
+   return strpbrk(string_to_check, invalid_chars);
 }
 
 static char* initialize(char *ptr) {
