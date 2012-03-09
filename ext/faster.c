@@ -11,7 +11,6 @@
 
 typedef struct {
     char *id;
-    char *comment;
     char *seq;
     char *quality;
     char *filename;
@@ -19,16 +18,18 @@ typedef struct {
     char *bad_chars;
     FILE *stream;
 
-}Record;
+}FastQRecord;
 
-static char*
-alloc_and_copy(char *dst, char *src) {
+static char* alloc_and_copy(char *dst, char *src) {
   if (dst==NULL || strlen(dst)<strlen(src)) {
      if (dst!=NULL)
         free(dst);
      dst= malloc(sizeof (char)*(strlen(src)+1));
   }
   strcpy(dst, src);
+  int len;
+  len = strlen(dst);
+  if (dst[len-1] == '\n') dst[len-1] = '\0';
   return dst;
 }
 
@@ -53,9 +54,9 @@ int check_header(char *header, char *firstline) {
     }
 }
 
-int fastQ_iterator(Record *seq) {
+int fastQ_iterator(FastQRecord *seq) {
 
-    // initialization of file stream, line buffer and bad string characters
+    // initialization of file stream, line buffer and bad string characters.
     if (!seq->stream)
       seq->stream = fopen(seq->filename,"r");
     if (!seq->line)
@@ -66,7 +67,10 @@ int fastQ_iterator(Record *seq) {
     char *header = "@"; // FastQ header
     for (int i = 0; i < 4; i++)
     {
-      if (fgets(seq->line, _BSIZE, seq->stream) == NULL) return 0;
+      if (fgets(seq->line, _BSIZE, seq->stream) == NULL) {
+        if((seq->seq != NULL && seq->quality == NULL) || (seq->quality != NULL && seq->seq == NULL)) return -2;
+        else return 0;
+      }
 
       if (i==0) {
         if (!check_header(header,seq->line)) return -1;
@@ -75,7 +79,11 @@ int fastQ_iterator(Record *seq) {
       else {
         if (check_bad_chars(seq->bad_chars,seq->line)) return -1;
         if (i==1) seq->seq = alloc_and_copy(seq->seq, seq->line);
-        if (i==3) seq->quality = alloc_and_copy(seq->quality, seq->line);
+        if (i==3) {
+            seq->quality = alloc_and_copy(seq->quality, seq->line);
+            if(strlen(seq->seq) != strlen(seq->quality)) return -2;
+        }
+
       }
     }
 

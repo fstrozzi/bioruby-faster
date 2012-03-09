@@ -1,5 +1,5 @@
 module Bio
-  module Faster
+  class Faster
     class Library
 
       require 'rbconfig'
