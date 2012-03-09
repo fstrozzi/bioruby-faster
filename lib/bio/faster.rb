@@ -35,11 +35,11 @@ module Bio
         while (result = Bio::Faster.fastQ_iterator(record)) == 1
           sequence = [record[:id].read_string,record[:seq].read_string, record[:quality].read_string]
           yield sequence
-          new_record = FastQRecord.new
-          new_record[:stream] = record[:stream]
-          new_record[:line] = record[:line]
-          new_record[:bad_chars] = record[:bad_chars]
-          record = new_record
+          #new_record = FastQRecord.new
+          #new_record[:stream] = record[:stream]
+          #new_record[:line] = record[:line]
+          #new_record[:bad_chars] = record[:bad_chars]
+          #record = new_record
         end
         case result
           when -1 then raise RuntimeError, "Bad formatted FastQ file!"
