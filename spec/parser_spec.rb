@@ -47,13 +47,12 @@ describe Bio::Faster do
     end
 
     it "should raise an error if sequence and quality are truncated or differ in length" do
-      puts "Trunctaed at Qual"
-      #expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_at_qual.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-      #expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_at_seq.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
+      expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_at_qual.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
+      expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_at_seq.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
       expect {Bio::Faster.new(File.join(TEST_DATA,"error_qual_null.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
       expect {Bio::Faster.new(File.join(TEST_DATA,"error_long_qual.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-      #expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_in_seq.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-      #expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_in_qual.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
+      expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_in_seq.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
+      expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_in_qual.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
 
     end
 
