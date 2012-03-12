@@ -87,7 +87,6 @@ int fastQ_iterator(FastQRecord *seq, int scale_factor) {
     seq->id = initialize(seq->id);
     seq->seq = initialize(seq->seq);
     seq->raw_quality = initialize(seq->raw_quality);
-    seq->quality = initialize_int(seq->quality);
     for (int i = 0; i < 4; i++)
     {
       if (fgets(seq->line, _BSIZE, seq->stream) == NULL) {
@@ -98,7 +97,7 @@ int fastQ_iterator(FastQRecord *seq, int scale_factor) {
       // getting seq ID
       if (i==0) {
         if (!check_header(header,seq->line)) return -1; // check if the header format is correct
-        seq->line = seq->line++; // removing the @
+        seq->line++; // removing the @
         seq->id = alloc_and_copy(seq->id, seq->line);
       }
       else {
@@ -109,6 +108,7 @@ int fastQ_iterator(FastQRecord *seq, int scale_factor) {
            int quality_length = strlen(seq->raw_quality);
            if(strlen(seq->seq) != quality_length) return -2;  // if sequence and quality are of different length the record is truncated
            int c = 0;
+           seq->quality = initialize_int(seq->quality);
            seq->quality = malloc(sizeof (int)* quality_length);
            while(c < quality_length) {
                 seq->quality[c] = *(seq->line + c) - scale_factor; // quality conversion
