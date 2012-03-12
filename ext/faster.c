@@ -1,7 +1,7 @@
 
 /*
   Copyright(C) 2012 Francesco Strozzi <francesco.strozzi@gmail.com>
-                    Yury Pirola
+
 */
 #include <stdio.h>
 #include <string.h>
@@ -73,11 +73,9 @@ int check_header(char *header, char *firstline) {
     }
 }
 
-int fastQ_iterator(FastQRecord *seq) {
-
+int fastQ_iterator(FastQRecord *seq, int scale_factor) {
     // initialization of structure elements.
     char *header = "@"; // FastQ header
-
     if (!seq->stream)
       seq->stream = fopen(seq->filename,"r");
     if (!seq->line)
@@ -97,9 +95,10 @@ int fastQ_iterator(FastQRecord *seq) {
         if((seq->seq != NULL && seq->raw_quality == NULL) || (seq->raw_quality != NULL && seq->seq == NULL)) return -2;
         else return 0;
       }
-
+      // getting seq ID
       if (i==0) {
         if (!check_header(header,seq->line)) return -1; // check if the header format is correct
+        seq->line = seq->line++; // removing the @
         seq->id = alloc_and_copy(seq->id, seq->line);
       }
       else {
@@ -112,7 +111,7 @@ int fastQ_iterator(FastQRecord *seq) {
            int c = 0;
            seq->quality = malloc(sizeof (int)* quality_length);
            while(c < quality_length) {
-                seq->quality[c] = *(seq->line + c) - 33; // quality conversion (Sanger/Phred only)
+                seq->quality[c] = *(seq->line + c) - scale_factor; // quality conversion
             	c++;
            }
 
@@ -125,8 +124,5 @@ int fastQ_iterator(FastQRecord *seq) {
 
 }
 
-int fastA_iterator(FastARecord *seq) {
-
-}
 
 #undef _BSIZE

@@ -12,8 +12,10 @@ module Bio
     ffi_lib Bio::Faster::Library.load
 
     attr_accessor :file
-    def initialize(file)
+    attr_accessor :encoding
+    def initialize(file, encoding = :sanger)
         self.file = file
+        self.encoding = encoding
     end
 
     class FastQRecord < FFI::Struct
@@ -28,12 +30,18 @@ module Bio
 
     end
 
-    attach_function :fastQ_iterator, [FastQRecord], :int
+    attach_function :fastQ_iterator, [FastQRecord, :int], :int
 
     def each_record
+        raise ArgumentError, "File #{self.file} does not exist" unless File.exists? self.file
         record = FastQRecord.new
+        scale_factor = nil
+        case self.encoding
+          when :sanger then scale_factor = 33
+          when :solexa then scale_factor = 64
+        end
         record[:filename] = FFI::MemoryPointer.from_string self.file
-        while (result = Bio::Faster.fastQ_iterator(record)) == 1
+        while (result = Bio::Faster.fastQ_iterator(record,scale_factor)) == 1
           yield [record[:id].read_string,record[:seq].read_string, record[:quality].read_array_of_type(:int, :read_int, record[:raw_quality].read_string.length)]
         end
         case result
