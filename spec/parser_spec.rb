@@ -2,59 +2,46 @@ require 'helper'
 
 describe Bio::Faster do
   
-  describe "#parse_fastq" do
+  describe "#each_record" do
 
     it "should read a FastQ file returning an array with sequence data" do
-      Bio::Faster.new(File.join(TEST_DATA,"sample.fastq")).each_record do |seq|
+      Bio::Faster.new(TEST_DATA+"/formats/illumina_full_range_as_illumina.fastq").each_record do |seq|
         seq.class.should == Array
       end
     end
 
-    it "should raise an error if the header is wrong" do
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_header.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-    end
-
-    it "should raise and error if there is a space in the quality string" do
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_qual_space.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-    end
-
-    it "should raise and error if there is a tab in the quality string" do
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_qual_tab.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-    end
-
-    it "should raise and error if there is a v-tab in the quality string" do
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_qual_vtab.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-    end
-
-    it "should raise and error if there is a space in the sequence string" do
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_spaces.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-    end
-
-    it "should raise and error if there is a tab in the sequence string" do
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_tabs.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-    end
-
-    it "should raise and error if there is a delete char in the quality string" do
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_qual_del.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-    end
-
-    it "should raise and error if there is an escape in the quality string" do
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_qual_escape.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-    end
-
-    it "should raise and error if there is a unit separator char in the quality string" do
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_qual_unit_sep.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-    end
-
-    it "should raise an error if sequence and quality are truncated or differ in length" do
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_at_qual.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_at_seq.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_qual_null.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_long_qual.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_in_seq.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
-      expect {Bio::Faster.new(File.join(TEST_DATA,"error_trunc_in_qual.fastq")).each_record {|seq|}}.to raise_error(RuntimeError)
+    it "should read different FastQ formats" do
+      files = Dir.glob(TEST_DATA+"/formats/*.fastq")
+      files.each do |file|
+        bioruby_data = []
+        Bio::FlatFile.open(Bio::Fastq,File.open(file)).each_entry do |seq|
+           bioruby_data << [seq.entry_id,seq.seq,seq.qualities]
+        end
+        faster_data = []
+        Bio::Faster.new(file).each_record do |seq|
+           seq[0] = seq[0].split(" ").first
+           faster_data << seq
+        end
+        faster_data.should == bioruby_data
+      end
 
     end
+
+    it "should handle correctly Phred64 qualities (Solexa)" do
+      file = TEST_DATA+"/formats/misc_rna_as_solexa.fastq"
+      bioruby_data = []
+      Bio::FlatFile.open(File.open(file)).each_entry do |seq|
+        seq.format = "fastq-solexa"
+        bioruby_data << [seq.entry_id,seq.seq,seq.qualities]
+      end
+      faster_data = []
+      Bio::Faster.new(file, :solexa).each_record do |seq|
+        seq[0] = seq[0].split(" ").first
+        faster_data << seq
+      end
+      faster_data.should == bioruby_data
+    end
+
 
   end
 
