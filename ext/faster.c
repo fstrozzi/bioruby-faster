@@ -97,8 +97,9 @@ int fastQ_iterator(FastQRecord *seq) {
       // getting seq ID
       if (i==0) {
         if (!check_header(header,seq->line)) return -1; // check if the header format is correct
-        seq->line++; // removing the @
-        seq->id = alloc_and_copy(seq->id, seq->line);
+        // removing the @
+        seq->id = alloc_and_copy(seq->id, seq->line+1);
+
       }
       else {
         if (check_bad_chars(seq->bad_chars,seq->line)) return -1; // check if quality or sequence includes bad characters
