@@ -12,7 +12,7 @@
 typedef struct {
     char *id;
     char *seq;
-    int *quality;
+//    int *quality;
     char *raw_quality;
     char *filename;
     char *line;
@@ -73,7 +73,7 @@ int check_header(char *header, char *firstline) {
     }
 }
 
-int fastQ_iterator(FastQRecord *seq, int scale_factor) {
+int fastQ_iterator(FastQRecord *seq) {
     // initialization of structure elements.
     char *header = "@"; // FastQ header
     if (!seq->stream)
@@ -105,15 +105,15 @@ int fastQ_iterator(FastQRecord *seq, int scale_factor) {
         if (i==1) seq->seq = alloc_and_copy(seq->seq, seq->line);
         if (i==3) {
            seq->raw_quality = alloc_and_copy(seq->raw_quality, seq->line);
-           int quality_length = strlen(seq->raw_quality);
-           if(strlen(seq->seq) != quality_length) return -2;  // if sequence and quality are of different length the record is truncated
-           int c = 0;
-           seq->quality = initialize_int(seq->quality);
-           seq->quality = malloc(sizeof (int)* quality_length);
-           while(c < quality_length) {
-                seq->quality[c] = *(seq->line + c) - scale_factor; // quality conversion
-            	c++;
-           }
+//           int quality_length = strlen(seq->raw_quality);
+           if(strlen(seq->seq) != strlen(seq->raw_quality)) return -2;  // if sequence and quality are of different length the record is truncated
+//           int c = 0;
+//           seq->quality = initialize_int(seq->quality);
+//           seq->quality = malloc(sizeof (int)* quality_length);
+//           while(c < quality_length) {
+//                seq->quality[c] = *(seq->line + c) - scale_factor; // quality conversion
+//            	c++;
+//           }
 
         }
 
