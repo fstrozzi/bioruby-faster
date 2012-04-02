@@ -71,7 +71,7 @@ describe Bio::Faster do
       faster_res[0][2].should == "AGCAATTTCCCTTTTCCTGTCCTTTTTATAACATTGTGGAGGAAGACGGCAGCATAAAAAGGACAGTATTTGATTAAAAAATGATAAAAATTTTCAAAC"
       
       faster_res[-1][0].should == "seq4"
-      faster_res[-1][1].should == "comment4"
+      faster_res[-1][1].should == nil
       faster_res[-1][2].should == "mgltrrealssiaavggekalkdalavlggps"
     end
   

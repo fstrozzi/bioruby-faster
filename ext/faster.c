@@ -26,7 +26,12 @@ static VALUE method_parse(VALUE self, VALUE file) {
 		while (kseq_read(seq) >= 0) {
 			VALUE arr = rb_ary_new();
 			rb_ary_push(arr, rb_str_new2(seq->name.s));
-			if (seq->comment.l) rb_ary_push(arr, rb_str_new2(seq->comment.s));
+			if (seq->comment.l) {
+				rb_ary_push(arr, rb_str_new2(seq->comment.s));
+			}
+			else {
+				rb_ary_push(arr, Qnil);
+			}	
 			rb_ary_push(arr, rb_str_new2(seq->seq.s));
 			if (seq->qual.l) {
 				VALUE rb_quality = rb_ary_new();
