@@ -5,24 +5,25 @@
 
 Gem::Specification.new do |s|
   s.name = "bio-faster"
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Francesco Strozzi"]
-  s.date = "2012-01-04"
+  s.date = "2012-04-02"
   s.description = "A fast parser for Fasta and FastQ files"
   s.email = "francesco.strozzi@gmail.com"
   s.extensions = ["ext/extconf.rb"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     ".document",
+    ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "VERSION",
     "bio-faster.gemspec",
@@ -41,7 +42,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.required_ruby_version = Gem::Requirement.new(">= 1.9")
-  s.rubygems_version = "1.8.12"
+  s.rubygems_version = "1.8.15"
   s.summary = "A fast parser for Fasta and FastQ files"
 
   if s.respond_to? :specification_version then
