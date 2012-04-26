@@ -21,7 +21,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{A fast parser for Fasta and FastQ files}
   gem.email = "francesco.strozzi@gmail.com"
   gem.authors = ["Francesco Strozzi"]
-  gem.required_ruby_version = '>= 1.9'
+  gem.files << "lib/*/**"
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
@@ -58,20 +58,14 @@ Rake::RDocTask.new do |rdoc|
 end
 
 namespace :ext do
-  desc "Compile extension"
+  desc "Build native extension"
   task :build do
-    puts "Building extension"
-    cd File.join(File.dirname(__FILE__),"ext")
-    sh "ruby "+File.join(File.dirname(__FILE__),"ext","extconf.rb")
-    sh "make"
-    FileList["*.log"].each do |file|
-      rm file
-    end
-    FileList["*.o"].each do |file|
-      rm file
-    end
-    cd ".."  
+    cd "ext"
+    ruby "mkrf_conf.rb"
+    sh "rake"
+    cd ".."
   end
+
 end
 
 task :default => ["ext:build",:spec]

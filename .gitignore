@@ -10,7 +10,7 @@ doc
 
 # bundler
 .bundle
-
+.idea
 # jeweler generated
 pkg
 .idea
