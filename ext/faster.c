@@ -6,9 +6,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <zlib.h>
 
-#define _BSIZE 0x100000
+#define _BSIZE 100000
 typedef struct {
     char *id;
     char *seq;
@@ -17,7 +16,7 @@ typedef struct {
     char *filename;
     char *line;
     char *bad_chars;
-    gzFile *stream;
+    FILE *stream;
 
 }FastQRecord;
 
@@ -68,7 +67,7 @@ int fastQ_iterator(FastQRecord *seq, int scale_factor) {
     // initialization of structure elements.
     char *header = "@"; // FastQ header
     if (!seq->stream)
-      seq->stream = gzopen(seq->filename,"r");
+      seq->stream = fopen(seq->filename,"r");
     if (!seq->line)
       seq->line = malloc(sizeof (char)* _BSIZE);
     if (!seq->bad_chars)
@@ -80,8 +79,8 @@ int fastQ_iterator(FastQRecord *seq, int scale_factor) {
     seq->raw_quality = initialize(seq->raw_quality);
     for (int i = 0; i < 4; i++)
     {
-      if ((seq->line = gzgets(seq->stream,seq->line,_BSIZE)) == Z_NULL) {
-        gzclose(seq->stream);
+      if (fgets(seq->line, _BSIZE, seq->stream) == NULL) {
+        fclose(seq->stream);
         // if either sequence or quality is missing the record is truncated
         if((seq->seq != NULL && seq->raw_quality == NULL) || (seq->raw_quality != NULL && seq->seq == NULL)) return -2;
         else return 0;

@@ -8,10 +8,10 @@ ext = Bio::Faster::Library.lib_extension
 flags = ""
 compile = ""
 if ext == "so" then
-  flags = "-shared -Wl,-soname,libfaster.so -lz"
+  flags = "-shared -Wl,-soname,libfaster.so"
   compile = " -fPIC"
 elsif ext == "dylib" then
-  flags = "-bundle -undefined dynamic_lookup -flat_namespace -lz"
+  flags = "-bundle -undefined dynamic_lookup -flat_namespace"
 end
 
 
