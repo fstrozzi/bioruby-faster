@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Francesco Strozzi"]
   s.date = "2012-04-27"
-  s.description = "A fast parser for Fasta and FastQ files"
+  s.description = "A fast parser for FastQ files"
   s.email = "francesco.strozzi@gmail.com"
   s.extensions = ["ext/mkrf_conf.rb"]
   s.extra_rdoc_files = [
@@ -81,7 +81,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.15"
-  s.summary = "A fast parser for Fasta and FastQ files"
+  s.summary = "A fast parser for FastQ files"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
