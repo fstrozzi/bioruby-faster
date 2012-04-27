@@ -21,15 +21,6 @@ typedef struct {
 
 }FastQRecord;
 
-typedef struct {
-    char *id;
-    char *seq;
-    char *filename;
-    char *line;
-    char *bad_chars;
-    FILE *stream;
-
-}FastARecord;
 
 static char* alloc_and_copy(char *dst, char *src) {
   if (dst==NULL || strlen(dst)<strlen(src)) {
