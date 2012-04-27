@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "bio-faster"
   gem.homepage = "http://github.com/fstrozzi/bioruby-faster"
   gem.license = "MIT"
-  gem.summary = %Q{A fast parser for Fasta and FastQ files}
-  gem.description = %Q{A fast parser for Fasta and FastQ files}
+  gem.summary = %Q{A fast parser for FastQ files}
+  gem.description = %Q{A fast parser for FastQ files}
   gem.email = "francesco.strozzi@gmail.com"
   gem.authors = ["Francesco Strozzi"]
   gem.files << "lib/*/**"
