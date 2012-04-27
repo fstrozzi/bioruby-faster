@@ -66,8 +66,13 @@ int check_header(char *header, char *firstline) {
 int fastQ_iterator(FastQRecord *seq, int scale_factor) {
     // initialization of structure elements.
     char *header = "@"; // FastQ header
-    if (!seq->stream)
-      seq->stream = fopen(seq->filename,"r");
+    if (!seq->stream) {
+      if(strcmp(seq->filename,"stdin") == 0) {
+        seq->stream = stdin;
+      }  
+      else
+        seq->stream = fopen(seq->filename,"r");
+    }  
     if (!seq->line)
       seq->line = malloc(sizeof (char)* _BSIZE);
     if (!seq->bad_chars)

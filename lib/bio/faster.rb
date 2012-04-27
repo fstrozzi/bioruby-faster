@@ -33,7 +33,11 @@ module Bio
     attach_function :fastQ_iterator, [FastQRecord, :int], :int
 
     def each_record
-        raise ArgumentError, "File #{self.file} does not exist" unless File.exists? self.file
+        if self.file == :stdin
+          self.file = "stdin"
+        elsif !File.exists? self.file
+          raise ArgumentError, "File #{self.file} does not exist"
+        end
         record = FastQRecord.new
         scale_factor = nil
         case self.encoding
