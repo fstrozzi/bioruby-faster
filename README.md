@@ -3,8 +3,7 @@
 Bio::Faster
 ==========
 
-Fast and simple parser for FastA / FastQ files, based on Heng Li Kseq library written in C.
-http://lh3lh3.users.sourceforge.net/parsefastq.shtml
+Fast and simple parser for FastQ files
 
 Examples
 ========
@@ -28,6 +27,6 @@ Contributing to bio-faster
 Copyright
 =========
 
-Copyright (c) 2011 Francesco Strozzi. See LICENSE.txt for
+Copyright (c) 2012 Francesco Strozzi. See LICENSE.txt for
 further details.
 
