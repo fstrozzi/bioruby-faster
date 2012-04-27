@@ -42,6 +42,24 @@ describe Bio::Faster do
 
     end
 
+    it "can read also gzipped FastQ files" do
+      gz_files = Dir.glob(TEST_DATA+"/formats/gzipped/*.fastq.gz")
+      gz_seq = []
+      gz_files.each do |file|
+        Bio::Faster.new(file).each_record do |seq|
+           gz_seq << seq
+        end    
+      end
+      files = Dir.glob(TEST_DATA+"/formats/gzipped/*.fastq")
+      norm_seq = []
+      files.each do |file|
+        Bio::Faster.new(file).each_record do |seq|
+           norm_seq << seq
+        end    
+      end
+      gz_seq.should == norm_seq
+    end
+
 
   end
 
