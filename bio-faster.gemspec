@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "bio-faster"
-  s.version = "0.4.2"
+  s.version = "0.4.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Francesco Strozzi"]
@@ -50,10 +50,6 @@ Gem::Specification.new do |s|
     "test/data/errors/error_trunc_at_seq.fastq",
     "test/data/errors/error_trunc_in_qual.fastq",
     "test/data/errors/error_trunc_in_seq.fastq",
-    "test/data/formats/gzipped/illumina_full_range_as_sanger.fastq",
-    "test/data/formats/gzipped/illumina_full_range_as_sanger.fastq.gz",
-    "test/data/formats/gzipped/sanger_full_range_as_sanger.fastq",
-    "test/data/formats/gzipped/sanger_full_range_as_sanger.fastq.gz",
     "test/data/formats/illumina_full_range_as_illumina.fastq",
     "test/data/formats/illumina_full_range_as_sanger.fastq",
     "test/data/formats/illumina_full_range_as_solexa.fastq",
@@ -79,7 +75,8 @@ Gem::Specification.new do |s|
     "test/data/formats/solexa_full_range_original_solexa.fastq",
     "test/data/formats/wrapping_as_illumina.fastq",
     "test/data/formats/wrapping_as_sanger.fastq",
-    "test/data/formats/wrapping_as_solexa.fastq"
+    "test/data/formats/wrapping_as_solexa.fastq",
+    "test/test_stdin.rb"
   ]
   s.homepage = "http://github.com/fstrozzi/bioruby-faster"
   s.licenses = ["MIT"]
