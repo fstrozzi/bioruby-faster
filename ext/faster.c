@@ -103,14 +103,15 @@ int fastQ_iterator(FastQRecord *seq, int scale_factor) {
            seq->raw_quality = alloc_and_copy(seq->raw_quality, seq->line);
            int quality_length = strlen(seq->raw_quality);
            if(strlen(seq->seq) != strlen(seq->raw_quality)) return -2;  // if sequence and quality are of different length the record is truncated
-           int c = 0;
-           seq->quality = initialize_int(seq->quality);
-           seq->quality = malloc(sizeof (int)* quality_length);
-           while(c < quality_length) {
-                seq->quality[c] = *(seq->line + c) - scale_factor; // quality conversion
-            	  c++;
-           }
-
+           if (scale_factor != 0) {
+					 		int c = 0;
+           		seq->quality = initialize_int(seq->quality);
+           		seq->quality = malloc(sizeof (int)* quality_length);
+           		while(c < quality_length) {
+                	seq->quality[c] = *(seq->line + c) - scale_factor; // quality conversion
+            	  	c++;
+           		}
+					 }
         }
 
       }

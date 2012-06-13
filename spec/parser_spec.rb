@@ -25,7 +25,7 @@ describe Bio::Faster do
       faster_data.should == bioruby_data
     end
     
-    it "should read different FastQ formats" do
+    it "should read different FastQ formats and convert quality scores" do
       files = Dir.glob(TEST_DATA+"/formats/*.fastq")
       files.each do |file|
         bioruby_data = []
@@ -41,6 +41,24 @@ describe Bio::Faster do
       end
 
     end
+
+		it "should read different FastQ formats without converting quality scores" do
+		
+      files = Dir.glob(TEST_DATA+"/formats/*.fastq")
+      files.each do |file|
+        bioruby_data = []
+        Bio::FlatFile.open(Bio::Fastq,File.open(file)).each_entry do |seq|
+           bioruby_data << [seq.entry_id,seq.seq,seq.quality_string]
+        end
+        faster_data = []
+        Bio::Faster.new(file).each_record(:quality => :raw) do |seq|
+           seq[0] = seq[0].split(" ").first
+           faster_data << seq
+        end
+        faster_data.should == bioruby_data
+      end
+
+		end
 
 
     it "can read from the standard input" do
