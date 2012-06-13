@@ -13,9 +13,8 @@ module Bio
 
     attr_accessor :file
     attr_accessor :encoding
-    def initialize(file, encoding = :sanger)
+    def initialize(file)
         self.file = file
-        self.encoding = encoding
     end
 
     class FastQRecord < FFI::Struct
@@ -32,7 +31,7 @@ module Bio
 
     attach_function :fastQ_iterator, [FastQRecord, :int], :int
 
-    def each_record(args = {:quality => :int}, &block)
+    def each_record(args = {:quality => :sanger}, &block)
         if self.file == :stdin
           self.file = "stdin"
         elsif !File.exists? self.file
@@ -41,17 +40,16 @@ module Bio
         record = FastQRecord.new
         record[:filename] = FFI::MemoryPointer.from_string self.file
 				result = nil
-
-				if args[:quality] == :int
-        	scale_factor = nil
-        	case self.encoding
-          	when :sanger then scale_factor = 33
-          	when :solexa then scale_factor = 64
-        	end
-					result = parse_fastq_with_quality_conversion(record, scale_factor, &block)
-				elsif args[:quality] == :raw
-					scale_factor = 0
-					result = parse_fastq(record, scale_factor, &block)	
+        case args[:quality]
+         	when :sanger
+						scale_factor = 33	
+						result = parse_fastq_with_quality_conversion(record, scale_factor, &block)
+         	when :solexa 
+						scale_factor = 64
+						result = parse_fastq_with_quality_conversion(record, scale_factor, &block)	
+					when :raw
+						scale_factor = 0
+						result = parse_fastq(record, scale_factor, &block)	
 				end
 
 				case result

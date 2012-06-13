@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "bio-faster"
-  s.version = "0.4.4"
+  s.version = "0.4.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Francesco Strozzi"]
-  s.date = "2012-04-27"
+  s.date = "2012-06-13"
   s.description = "A fast parser for FastQ files"
   s.email = "francesco.strozzi@gmail.com"
   s.extensions = ["ext/mkrf_conf.rb"]
@@ -54,6 +54,7 @@ Gem::Specification.new do |s|
     "test/data/formats/illumina_full_range_as_sanger.fastq",
     "test/data/formats/illumina_full_range_as_solexa.fastq",
     "test/data/formats/illumina_full_range_original_illumina.fastq",
+    "test/data/formats/issue_2.fastq",
     "test/data/formats/longreads_as_illumina.fastq",
     "test/data/formats/longreads_as_sanger.fastq",
     "test/data/formats/longreads_as_solexa.fastq",
@@ -81,7 +82,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/fstrozzi/bioruby-faster"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.15"
+  s.rubygems_version = "1.8.24"
   s.summary = "A fast parser for FastQ files"
 
   if s.respond_to? :specification_version then

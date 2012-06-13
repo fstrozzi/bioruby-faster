@@ -18,7 +18,7 @@ describe Bio::Faster do
         bioruby_data << [seq.entry_id,seq.seq,seq.qualities]
       end
       faster_data = []
-      Bio::Faster.new(file, :solexa).each_record do |seq|
+      Bio::Faster.new(file).each_record(:quality => :solexa) do |seq|
         seq[0] = seq[0].split(" ").first
         faster_data << seq
       end
