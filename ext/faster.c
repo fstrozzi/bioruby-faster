@@ -95,10 +95,9 @@ int fastQ_iterator(FastQRecord *seq, int scale_factor) {
         if (!check_header(header,seq->line)) return -1; // check if the header format is correct
         // removing the @
         seq->id = alloc_and_copy(seq->id, seq->line+1);
-
       }
       else {
-        if (check_bad_chars(seq->bad_chars,seq->line)) return -1; // check if quality or sequence includes bad characters
+        if ((i==1 || i==3) && (check_bad_chars(seq->bad_chars,seq->line))) return -1; // check if quality or sequence includes bad characters
         if (i==1) seq->seq = alloc_and_copy(seq->seq, seq->line);
         if (i==3) {
            seq->raw_quality = alloc_and_copy(seq->raw_quality, seq->line);
